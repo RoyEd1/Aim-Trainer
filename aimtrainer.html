@@ -170,27 +170,21 @@
         let targetInterval;
         let gameTimer;
 
-        // Function to set canvas size based on its container
+        // Function to set canvas size based on its rendered dimensions
         function setCanvasSize() {
-            // Get the computed style of the canvas's parent (game-container)
-            const container = canvas.parentElement;
-            const containerWidth = container.clientWidth - 40; // Account for padding
-            const containerHeight = container.clientHeight - 200; // Adjust for other elements
+            // Get the actual rendered width and height of the canvas element as determined by CSS
+            const displayedWidth = canvas.offsetWidth;
+            const displayedHeight = canvas.offsetHeight;
 
-            // Set canvas dimensions, ensuring it doesn't exceed certain limits
-            canvas.width = Math.min(containerWidth, 760); // Max width 760px
-            canvas.height = Math.min(containerHeight, 380); // Max height 380px
+            // Set the internal drawing buffer dimensions to match the displayed dimensions
+            canvas.width = displayedWidth;
+            canvas.height = displayedHeight;
 
-            // Ensure a minimum size for very small screens
-            if (canvas.width < 200) canvas.width = 200;
-            if (canvas.height < 150) canvas.height = 150;
-
-            // Redraw everything after resizing
+            // Redraw everything after resizing, or clear if game is not active
             if (gameActive) {
                 drawTarget();
             } else {
-                // Clear canvas if game is not active
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas if game is not active
             }
         }
 
